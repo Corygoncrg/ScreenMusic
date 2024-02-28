@@ -4,6 +4,9 @@ import ScreenMusic.models.*;
 import ScreenMusic.repository.ScreenMusicRepository;
 import ScreenMusic.service.ConsultaChatGPT;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Principal {
@@ -100,10 +103,32 @@ private void cadastrarMusicaArtista() {
     if (artistaBusca.isPresent()) {
         System.out.println("Qual o nome da música?");
         String nomeMusica = leitura.nextLine();
-        Musica musica = new Musica(nomeMusica);
-        musica.setArtista(artistaBusca.get());
-        artistaBusca.get().getListaMusicas().add(musica);
-        repositorio.save(artistaBusca.get());
+        try {
+            System.out.println("Data de lançamento? (DD/MM/AAAA)");
+            String dataLancamento = leitura.nextLine();
+            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate data = LocalDate.parse(dataLancamento, formatador);
+            System.out.println("""
+                    Gêneros disponíveis:
+                    Pop
+                    Hip Hop
+                    Rock
+                    Eletronica
+                    Bossa nova
+                    Rap
+                    """);
+            String generoInput = leitura.nextLine();
+            Genero genero = Genero.fromString(generoInput);
+
+            Musica musica = new Musica(nomeMusica);
+            musica.setArtista(artistaBusca.get());
+            musica.setDataLancamento(data);
+            musica.setGenero(genero);
+            artistaBusca.get().getListaMusicas().add(musica);
+            repositorio.save(artistaBusca.get());
+        } catch (DateTimeParseException e) {
+            System.out.println("Erro ao converter a data, verifique se adicionou / entre os números.");
+        }
     }
 }
 
