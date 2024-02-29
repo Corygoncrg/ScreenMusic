@@ -16,8 +16,6 @@ public class Artista {
     private String nome;
     @Enumerated (EnumType.STRING)
     private TipoArtista tipo;
-    private LocalDate idade;
-    private int albuns;
 
 
     @OneToMany (mappedBy = "artista", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -39,21 +37,9 @@ public class Artista {
         this.nome = nome;
     }
 
-    public LocalDate getIdade() {
-        return idade;
-    }
 
-    public void setIdade(LocalDate idade) {
-        this.idade = idade;
-    }
 
-    public int getAlbuns() {
-        return albuns;
-    }
 
-    public void setAlbuns(int albuns) {
-        this.albuns = albuns;
-    }
 
 
 
@@ -83,12 +69,10 @@ public class Artista {
 
     @Override
     public String toString() {
-        return "Artista{" +
-                "nome='" + nome + '\'' +
-                ", tipo=" + tipo +
-                ", idade=" + idade +
-                ", albuns=" + albuns +
-                ", listaMusicas=" + listaMusicas +
+        return
+                "Nome: " + nome +
+                ", Tipo: " + tipo +
+                ", Musicas: {" + listaMusicas +
                 '}';
     }
 }

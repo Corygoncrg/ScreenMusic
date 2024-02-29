@@ -6,7 +6,8 @@ public enum Genero {
     ROCK("Rock"),
     ELETRONICA("Eletronica"),
     BOSSA_NOVA("Bossa Nova"),
-    RAP("Rap");
+    RAP("Rap"),
+    INSTRUMENTAL("Instrumental");
 
     private String generoMusica;
 

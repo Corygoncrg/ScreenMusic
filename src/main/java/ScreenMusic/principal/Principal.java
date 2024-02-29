@@ -17,7 +17,18 @@ public class Principal {
 
     private List<Artista> artistas = new ArrayList<>();
     private Optional<Artista> artistaBusca;
+    DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    private String mostrarGeneros = """
+                    Gêneros disponíveis:
+                    Pop
+                    Hip Hop
+                    Rock
+                    Eletronica
+                    Bossa nova
+                    Rap
+                    Instrumental
+                    """;
     public Principal(ScreenMusicRepository repositorio){
     this.repositorio = repositorio;
 }
@@ -86,7 +97,7 @@ public class Principal {
 private void cadastrarArtista() {
         String cadastrarNovo = "S";
         while (cadastrarNovo.equalsIgnoreCase("s")) {
-            System.out.println("Diga o artista que deseja pesquisar");
+            System.out.println("Diga o artista que deseja cadastrar");
             String nomeArtista = leitura.nextLine();
             System.out.println("Que tipo de artista ele é? (solo, dupla ou banda)");
             String tipo = leitura.nextLine();
@@ -106,20 +117,10 @@ private void cadastrarMusicaArtista() {
         try {
             System.out.println("Data de lançamento? (DD/MM/AAAA)");
             String dataLancamento = leitura.nextLine();
-            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate data = LocalDate.parse(dataLancamento, formatador);
-            System.out.println("""
-                    Gêneros disponíveis:
-                    Pop
-                    Hip Hop
-                    Rock
-                    Eletronica
-                    Bossa nova
-                    Rap
-                    """);
+            System.out.println(mostrarGeneros);
             String generoInput = leitura.nextLine();
             Genero genero = Genero.fromString(generoInput);
-
             Musica musica = new Musica(nomeMusica);
             musica.setArtista(artistaBusca.get());
             musica.setDataLancamento(data);
@@ -138,6 +139,9 @@ private void listarArtistas() {
 }
 
 private void listarMusicas() {
+
+        List <Musica> musicas = repositorio.listarMusicas();
+        musicas.forEach(System.out::println);
 }
 
 private void buscarMusicaPorArtista() {
@@ -152,29 +156,32 @@ private void buscarMusicaPorArtista() {
 }
 
 private void buscarMusicaPorGenero() {
-//    System.out.println("""
-//            Genêros disponíveis:
-//            Pop;
-//            Hip hop;
-//            Rock;
-//            Bossa nova;
-//            Eletronica;
-//            Rap
-//            """);
-//    String nomeGenero = leitura.nextLine();
-//    Genero genero = Genero.fromString(nomeGenero);
-//    Optional<Musica> musicas = repositorio.findByTipo(genero);
-//    musicas.stream()
-//            .forEach(System.out::println);
-
+    System.out.println(mostrarGeneros);
+    String nomeGenero = leitura.nextLine();
+    Genero genero = Genero.fromString(nomeGenero);
+    List<Musica> musicasPorGenero = repositorio.encontrarPorGenero(genero);
+    System.out.println("Buscando músicas...");
+    musicasPorGenero.forEach(System.out::println);
 }
 
 private void buscarMusicaPorAno() {
-
+    System.out.println("A partir de qual data deseja buscar? (01/01/0000)");
+    String anoBusca = leitura.nextLine();
+    LocalDate data = LocalDate.parse(anoBusca, formatador);
+    List<Musica> musicasPorAno = repositorio.encontrarPorAno(data);
+    System.out.println("Buscando músicas...");
+    musicasPorAno.forEach(System.out::println);
 }
 
 private void buscarMusicaPorGeneroEAno() {
-
-}
+    System.out.println(mostrarGeneros);
+    String nomeGenero = leitura.nextLine();
+    Genero genero = Genero.fromString(nomeGenero);
+    System.out.println("A partir de qual data deseja buscar? (01/01/0000)");
+    String anoBusca = leitura.nextLine();
+    LocalDate data = LocalDate.parse(anoBusca, formatador);
+    List<Musica> musicasPorGeneroEAno = repositorio.encontrarPorGeneroEAno(genero, data);
+    musicasPorGeneroEAno.forEach(System.out::println);
+    }
 
 }
