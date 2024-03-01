@@ -72,8 +72,7 @@ public class Artista {
         return
                 "Nome: " + nome +
                 ", Tipo: " + tipo +
-                ", Musicas: {" + listaMusicas +
-                '}';
+                ", Musicas: \n" + listaMusicas;
     }
 }
 

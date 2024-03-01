@@ -11,9 +11,9 @@ import java.util.*;
 
 public class Principal {
 
-    private Scanner leitura = new Scanner(System.in);
+    private final Scanner leitura = new Scanner(System.in);
     private ConsultaChatGPT servico = new ConsultaChatGPT();
-    private ScreenMusicRepository repositorio;
+    private final ScreenMusicRepository repositorio;
 
     private List<Artista> artistas = new ArrayList<>();
     private Optional<Artista> artistaBusca;
@@ -50,6 +50,7 @@ public class Principal {
                     6 - Buscar músicas por gênero
                     7 - Buscar músicas por ano
                     8 - Buscar músicas por gênero e ano
+                    9 - Pesquisar dados sobre um artista
                     0 - Encerrar a sessão
                     """;
             System.out.println(menu);
@@ -81,6 +82,9 @@ public class Principal {
                     break;
                 case 8:
                     buscarMusicaPorGeneroEAno();
+                    break;
+                case 9:
+                    pesquisarSobreOArtista();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -139,9 +143,8 @@ private void listarArtistas() {
 }
 
 private void listarMusicas() {
-
-        List <Musica> musicas = repositorio.listarMusicas();
-        musicas.forEach(System.out::println);
+    List <Musica> musicas = repositorio.listarMusicas();
+    musicas.forEach(System.out::println);
 }
 
 private void buscarMusicaPorArtista() {
@@ -182,6 +185,14 @@ private void buscarMusicaPorGeneroEAno() {
     LocalDate data = LocalDate.parse(anoBusca, formatador);
     List<Musica> musicasPorGeneroEAno = repositorio.encontrarPorGeneroEAno(genero, data);
     musicasPorGeneroEAno.forEach(System.out::println);
+
+    }
+
+    private void pesquisarSobreOArtista() {
+        System.out.println("Sobre qual artista deseja pesquisar?");
+        String nomeArtista = leitura.nextLine();
+        String resposta = ConsultaChatGPT.buscarArtista(nomeArtista);
+        System.out.println(resposta.trim());
     }
 
 }

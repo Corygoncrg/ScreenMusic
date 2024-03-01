@@ -72,8 +72,8 @@ public class Musica {
     @Override
     public String toString() {
         return
-                "Titulo: " + titulo +
+                "\nTitulo: " + titulo +
                 "\nData De Lancamento: " + dataLancamento +
-                "\nGênero: \n" + genero;
+                "\nGênero: " + genero;
     }
 }

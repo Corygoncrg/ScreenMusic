@@ -8,12 +8,12 @@ import com.theokanning.openai.service.OpenAiService;
 public class ConsultaChatGPT {
 
         public static String buscarArtista(String texto) {
-            OpenAiService service = new OpenAiService("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");
+            OpenAiService service = new OpenAiService("ChatGPT_KEY");
 
             CompletionRequest requisicao = CompletionRequest.builder()
-                    .prompt("Me diga quem é : " + texto)
-                    .model("babbage-002")
-                    .maxTokens(100)
+                    .prompt("Me fale sobre o artista: " + texto)
+                    .model("gpt-3.5-turbo-instruct")
+                    .maxTokens(300)
                     .build();
 
             CompletionResult resposta = service.createCompletion(requisicao);
