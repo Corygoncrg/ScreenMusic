@@ -1,6 +1,6 @@
 package ScreenMusic.models;
 
-public enum TipoArtista {
+public enum TipoArtistaEnum {
     SOLO,
     DUPLA,
     BANDA;

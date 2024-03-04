@@ -1,6 +1,6 @@
 package ScreenMusic;
 
-import ScreenMusic.principal.Principal;
+import ScreenMusic.main.Principal;
 import ScreenMusic.repository.ScreenMusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

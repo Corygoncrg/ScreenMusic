@@ -4,7 +4,9 @@ import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.service.OpenAiService;
 
-
+/**
+ * Método para consultar o chat GPT para adquirir informações sobre um artista
+ */
 public class ConsultaChatGPT {
 
         public static String buscarArtista(String texto) {

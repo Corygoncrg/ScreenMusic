@@ -1,4 +1,4 @@
-package ScreenMusic.principal;
+package ScreenMusic.main;
 
 import ScreenMusic.models.*;
 import ScreenMusic.repository.ScreenMusicRepository;
@@ -12,14 +12,11 @@ import java.util.*;
 public class Principal {
 
     private final Scanner leitura = new Scanner(System.in);
-    private ConsultaChatGPT servico = new ConsultaChatGPT();
     private final ScreenMusicRepository repositorio;
-
-    private List<Artista> artistas = new ArrayList<>();
     private Optional<Artista> artistaBusca;
     DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private String mostrarGeneros = """
+    private final String mostrarGeneros = """
                     Gêneros disponíveis:
                     Pop
                     Hip Hop
@@ -32,10 +29,6 @@ public class Principal {
     public Principal(ScreenMusicRepository repositorio){
     this.repositorio = repositorio;
 }
-
-
-
-
 
     public void exibeMenu() {
         int opcao = -1;
@@ -98,20 +91,29 @@ public class Principal {
 
         }
     }
-private void cadastrarArtista() {
+
+    /**
+     * Método para cadastrar um artista novo no banco de dados
+     */
+    private void cadastrarArtista() {
         String cadastrarNovo = "S";
         while (cadastrarNovo.equalsIgnoreCase("s")) {
             System.out.println("Diga o artista que deseja cadastrar");
             String nomeArtista = leitura.nextLine();
             System.out.println("Que tipo de artista ele é? (solo, dupla ou banda)");
             String tipo = leitura.nextLine();
-            TipoArtista tipoArtista = TipoArtista.valueOf(tipo.toUpperCase());
+            TipoArtistaEnum tipoArtista = TipoArtistaEnum.valueOf(tipo.toUpperCase());
             Artista artista = new Artista(nomeArtista, tipoArtista);
             repositorio.save(artista);
             System.out.println("Cadastrar outro artista? S/N");
             cadastrarNovo = leitura.nextLine();
         }
     }
+
+    /**
+     * Método para adicionar uma música nova a partir de um
+     * artista já existente no banco de dados
+     */
 
 private void cadastrarMusicaArtista() {
     buscarMusicaPorArtista();
@@ -124,7 +126,7 @@ private void cadastrarMusicaArtista() {
             LocalDate data = LocalDate.parse(dataLancamento, formatador);
             System.out.println(mostrarGeneros);
             String generoInput = leitura.nextLine();
-            Genero genero = Genero.fromString(generoInput);
+            GeneroEnum genero = GeneroEnum.fromString(generoInput);
             Musica musica = new Musica(nomeMusica);
             musica.setArtista(artistaBusca.get());
             musica.setDataLancamento(data);
@@ -137,15 +139,27 @@ private void cadastrarMusicaArtista() {
     }
 }
 
+    /**
+     * Método para listar todos os artistas existentes atualmente no banco de dados
+     */
+
 private void listarArtistas() {
-    artistas = repositorio.findAll();
+    List<Artista> artistas = repositorio.findAll();
     artistas.forEach(System.out::println);
 }
 
+    /**
+     * Método para listar todas as músicas existentes atualmente no banco de dados sem
+     * listar o artista do qual pertencem.
+     */
 private void listarMusicas() {
     List <Musica> musicas = repositorio.listarMusicas();
     musicas.forEach(System.out::println);
 }
+
+    /**
+     * Método para mostrar músicas que pertençam a um artista já existente no banco de dados.
+     */
 
 private void buscarMusicaPorArtista() {
     System.out.println("Digite o nome do artista que deseja pesquisar");
@@ -158,14 +172,22 @@ private void buscarMusicaPorArtista() {
     }
 }
 
+    /**
+     * Método para mostrar músicas filtradas por gênero
+     */
+
 private void buscarMusicaPorGenero() {
     System.out.println(mostrarGeneros);
     String nomeGenero = leitura.nextLine();
-    Genero genero = Genero.fromString(nomeGenero);
+    GeneroEnum genero = GeneroEnum.fromString(nomeGenero);
     List<Musica> musicasPorGenero = repositorio.encontrarPorGenero(genero);
     System.out.println("Buscando músicas...");
     musicasPorGenero.forEach(System.out::println);
 }
+
+    /**
+     * Método para mostrar músicas por um filtro de data usando a formatação dia/mês/AnoCompleto
+     */
 
 private void buscarMusicaPorAno() {
     System.out.println("A partir de qual data deseja buscar? (01/01/0000)");
@@ -176,10 +198,14 @@ private void buscarMusicaPorAno() {
     musicasPorAno.forEach(System.out::println);
 }
 
+    /**
+     * Método para mostar músicas filtradas por um gênero e então a partir de uma data
+     */
+
 private void buscarMusicaPorGeneroEAno() {
     System.out.println(mostrarGeneros);
     String nomeGenero = leitura.nextLine();
-    Genero genero = Genero.fromString(nomeGenero);
+    GeneroEnum genero = GeneroEnum.fromString(nomeGenero);
     System.out.println("A partir de qual data deseja buscar? (01/01/0000)");
     String anoBusca = leitura.nextLine();
     LocalDate data = LocalDate.parse(anoBusca, formatador);
@@ -187,6 +213,10 @@ private void buscarMusicaPorGeneroEAno() {
     musicasPorGeneroEAno.forEach(System.out::println);
 
     }
+
+    /**
+     * Método para pesquisar sobre um artista usando o chat GPT
+     */
 
     private void pesquisarSobreOArtista() {
         System.out.println("Sobre qual artista deseja pesquisar?");

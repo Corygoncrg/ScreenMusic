@@ -2,7 +2,6 @@ package ScreenMusic.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +14,12 @@ public class Artista {
     @Column(unique = true)
     private String nome;
     @Enumerated (EnumType.STRING)
-    private TipoArtista tipo;
-
+    private TipoArtistaEnum tipo;
 
     @OneToMany (mappedBy = "artista", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Musica> listaMusicas = new ArrayList<>();
 
-    public Artista(String nomeArtista, TipoArtista tipoArtista) {
+    public Artista(String nomeArtista, TipoArtistaEnum tipoArtista) {
         this.nome = nomeArtista;
         this.tipo = tipoArtista;
     }
@@ -32,22 +30,15 @@ public class Artista {
 
     public Artista(){}
 
-
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-
-
-
-
-
-
-    public TipoArtista getTipo() {
+    public TipoArtistaEnum getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoArtista tipo) {
+    public void setTipo(TipoArtistaEnum tipo) {
         this.tipo = tipo;
     }
 

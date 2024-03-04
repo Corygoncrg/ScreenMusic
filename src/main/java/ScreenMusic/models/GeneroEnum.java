@@ -1,6 +1,6 @@
 package ScreenMusic.models;
 
-public enum Genero {
+public enum GeneroEnum {
     Pop("Pop"),
     HIPHOP("Hip hop"),
     ROCK("Rock"),
@@ -9,15 +9,14 @@ public enum Genero {
     RAP("Rap"),
     INSTRUMENTAL("Instrumental");
 
-    private String generoMusica;
+    private final String generoMusica;
 
-
-    Genero(String generoMusica){
+    GeneroEnum(String generoMusica){
         this.generoMusica = generoMusica;
     }
 
-    public static Genero fromString(String texto) {
-        for (Genero genero : Genero.values()) {
+    public static GeneroEnum fromString(String texto) {
+        for (GeneroEnum genero : GeneroEnum.values()) {
             if (genero.generoMusica.equalsIgnoreCase(texto)) {
                 return genero;
             }

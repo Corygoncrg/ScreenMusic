@@ -14,8 +14,7 @@ public class Musica {
     private String titulo;
     private LocalDate dataLancamento;
     @Enumerated (EnumType.STRING)
-    private Genero genero;
-
+    private GeneroEnum genero;
 
     @ManyToOne
     @JoinColumn (name = "artista_id")
@@ -26,8 +25,6 @@ public class Musica {
     public Musica(String nomeMusica){
         this.titulo = nomeMusica;
     }
-
-
 
     public String getTitulo() {
         return titulo;
@@ -45,11 +42,11 @@ public class Musica {
         this.dataLancamento = dataLancamento;
     }
 
-    public Genero getGenero() {
+    public GeneroEnum getGenero() {
         return genero;
     }
 
-    public void setGenero(Genero genero) {
+    public void setGenero(GeneroEnum genero) {
         this.genero = genero;
     }
 
